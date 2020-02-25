@@ -1,9 +1,14 @@
 package be.pxl.student.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Account {
+
+    public Account (){
+        this.payments = new ArrayList<Payment>();
+    }
 
     private String IBAN;
     private String name;
