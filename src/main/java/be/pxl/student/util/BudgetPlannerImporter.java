@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -24,7 +26,7 @@ public class BudgetPlannerImporter {
         ArrayList<Payment> payments = new ArrayList<>();
 
         try {
-            reader = new BufferedReader(new FileReader("D:/Documenten/2tinJ/Programming Advanced/Java/BudgetPlanner/src/main/resources/account_payments.csv"));
+            reader = new BufferedReader(new FileReader(Paths.get("src/main/resources/account_payments.csv").toFile()));
             String line = reader.readLine();
             line = reader.readLine();
             Account account = new Account();
