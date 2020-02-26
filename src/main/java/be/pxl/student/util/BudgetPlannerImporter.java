@@ -4,17 +4,16 @@ import be.pxl.student.entity.Account;
 import be.pxl.student.entity.Payment;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -24,12 +23,12 @@ public class BudgetPlannerImporter {
     public static void main(String[] args) {
         BufferedReader reader = null;
         ArrayList<Payment> payments = new ArrayList<>();
+        Account account = new Account();
 
         try {
             reader = new BufferedReader(new FileReader(Paths.get("src/main/resources/account_payments.csv").toFile()));
             String line = reader.readLine();
             line = reader.readLine();
-            Account account = new Account();
             account.setName(line.split(",")[0]);
             account.setIBAN(line.split(",")[1]);
 
@@ -56,8 +55,40 @@ public class BudgetPlannerImporter {
             }
         }
 
-        for (Payment pay: payments) {
-            System.out.println(pay.toString());
+        System.out.println(account);
+    }
+
+    public static List<String> readCsvFile(Path path)
+    {
+        List<String> fileLines = new ArrayList<>();
+        BufferedReader reader = null;
+
+        try
+        {
+            reader = new BufferedReader(new FileReader(path.toFile()));
+            String line = reader.readLine();
+
+            while ((line = reader.readLine()) != null)
+            {
+                fileLines.add(line);
+            }
         }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                reader.close();
+            }
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+
+        return fileLines;
     }
 }
