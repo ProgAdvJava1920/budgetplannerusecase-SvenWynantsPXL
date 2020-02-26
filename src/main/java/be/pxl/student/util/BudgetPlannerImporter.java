@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.Buffer;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.ZonedDateTime;
@@ -58,37 +59,53 @@ public class BudgetPlannerImporter {
         System.out.println(account);
     }
 
-    public static List<String> readCsvFile(Path path)
-    {
+    public static List<String> readCsvFile(Path path) throws BudgetPlannerException {
         List<String> fileLines = new ArrayList<>();
         BufferedReader reader = null;
 
         try
         {
-            reader = new BufferedReader(new FileReader(path.toFile()));
-            String line = reader.readLine();
+            reader = Files.newBufferedReader(path);
+            String line = reader.readLine(); // ignore first line
 
             while ((line = reader.readLine()) != null)
             {
                 fileLines.add(line);
             }
         }
-        catch (IOException ex)
+        catch (IOException | NullPointerException ex)
         {
-            ex.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                reader.close();
-            }
-            catch (IOException ex)
-            {
-                ex.printStackTrace();
-            }
+            throw new BudgetPlannerException("Something went wrong reading csv file", ex);
         }
 
         return fileLines;
+    }
+
+    public List<Account> createAccounts(List<String> csvFile)
+    {
+        List<Account> accounts = new ArrayList<>();
+
+        for (String line: csvFile)
+        {
+            String [] data = line.split(",");
+            boolean exists = false;
+
+            for (Account acc: accounts) {
+                if (acc.getName() == data[0] && acc.getIBAN() == data[1])
+                {
+                    exists = true;
+                }
+            }
+
+            if (!exists)
+            {
+                Account account = new Account();
+                account.setName(data[0]);
+                account.setIBAN(data[1]);
+                accounts.add(account);
+            }
+        }
+
+        return accounts;
     }
 }
