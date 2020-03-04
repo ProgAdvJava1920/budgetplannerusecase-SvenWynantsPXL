@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class Account {
     private String name;
     private String IBAN;
-    private List<Payment> payments;
+    private List<Payment> payments = new ArrayList<>();
 
     public Account(String name, String IBAN){
         this.name = name;

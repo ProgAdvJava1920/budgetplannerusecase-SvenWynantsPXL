@@ -10,8 +10,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BudgetPlannerMapperTest {
 
@@ -44,7 +43,7 @@ public class BudgetPlannerMapperTest {
     }
 
     @Test
-    void it_should_map_line_to_account_object(){
+    void it_should_map_line_to_account_object() throws ParseException, BudgetPlannerException {
         Account expectedAccount = new Account("Jos", "BE69771770897312");
         Account lineToAccount = mapper.mapDataLineToAccount(testDataLine);
         assertEquals(expectedAccount, lineToAccount);
@@ -55,12 +54,15 @@ public class BudgetPlannerMapperTest {
         String testDataLine = "Jos,BE69771770897312,BE93287762060534,Thu Feb 20 03:28:49 CET 2020,4274.76,EUR,Nostrum ducimus error dolore amet.";
 
         Payment expectedPayment = new Payment(
-                "BE69771770897312",
+                "BE93287762060534",
                 mapper.convertToDate("Thu Feb 20 03:28:49 CET 2020"),
                 4274.76f,
                 "EUR",
                 "Nostrum ducimus error dolore amet."
         );
+
+        Payment actualPayment = mapper.mapItemsToPayment(testDataLine.split(","));
+        assertEquals(expectedPayment, actualPayment);
     }
 
     @Test
