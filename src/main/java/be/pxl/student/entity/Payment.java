@@ -4,12 +4,14 @@ import java.util.Date;
 
 public class Payment {
 
+    private String IBAN;
     private Date date;
     private float amount;
     private String currency;
     private String detail;
 
-    public Payment(Date date, float amount, String currency, String detail) {
+    public Payment(String IBAN, Date date, float amount, String currency, String detail) {
+        this.IBAN = IBAN;
         this.date = date;
         this.amount = amount;
         this.currency = currency;
