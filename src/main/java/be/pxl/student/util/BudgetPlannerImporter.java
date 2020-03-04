@@ -33,18 +33,6 @@ public class BudgetPlannerImporter {
             account.setName(line.split(",")[0]);
             account.setIBAN(line.split(",")[1]);
 
-            while (line != null) {
-                String[] data = line.split(",");
-                DateTimeFormatter myFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-                ZonedDateTime zonedDate = ZonedDateTime.parse(data[3], myFormatter);
-                float amount = Float.parseFloat(data[4]);
-                String currency = data[5];
-                String details = data[6];
-                Payment payment = new Payment(Date.from(zonedDate.toInstant()), amount, currency, details);
-                payments.add(payment);
-                line = reader.readLine();
-            }
-
             account.setPayments(payments);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -84,6 +72,7 @@ public class BudgetPlannerImporter {
     public List<Account> createAccounts(List<String> csvFile)
     {
         List<Account> accounts = new ArrayList<>();
+        List<Payment> payments;
 
         for (String line: csvFile)
         {
@@ -94,6 +83,11 @@ public class BudgetPlannerImporter {
                 if (acc.getName() == data[0] && acc.getIBAN() == data[1])
                 {
                     exists = true;
+                    List<Payment> accpay = acc.getPayments();
+
+                    Payment payment = createPayment(data);
+                    accpay.add(payment);
+                    acc.setPayments(accpay);
                 }
             }
 
@@ -107,5 +101,21 @@ public class BudgetPlannerImporter {
         }
 
         return accounts;
+    }
+
+    public Payment createPayment(String [] data)
+    {
+        DateTimeFormatter myFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+        ZonedDateTime zonedDate = ZonedDateTime.parse(data[3], myFormatter);
+
+        float amount = Float.parseFloat(data[4]);
+
+        String currency = data[5];
+
+        String details = data[6];
+
+        Payment payment = new Payment(Date.from(zonedDate.toInstant()), amount, currency, details);
+
+        return payment;
     }
 }
