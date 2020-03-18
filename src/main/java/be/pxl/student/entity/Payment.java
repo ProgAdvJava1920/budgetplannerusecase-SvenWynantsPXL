@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Payment {
-
+    private int id;
+    private int accountId;
+    private int counterAccountId;
     private String IBAN;
     private Date date;
     private float amount;
