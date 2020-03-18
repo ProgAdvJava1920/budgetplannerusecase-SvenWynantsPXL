@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Payment {
-    private int id;
-    private int accountId;
-    private int counterAccountId;
+    private int id;     // PK
+    private int accountId; // FK
+    private int counterAccountId;  // FK
     private String IBAN;
     private Date date;
     private float amount;
@@ -19,6 +19,34 @@ public class Payment {
         this.amount = amount;
         this.currency = currency;
         this.detail = detail;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public int getCounterAccountId() {
+        return counterAccountId;
+    }
+
+    public void setCounterAccountId(int counterAccountId) {
+        this.counterAccountId = counterAccountId;
+    }
+
+    public String getIBAN() {
+        return IBAN;
+    }
+
+    public void setIBAN(String IBAN) {
+        this.IBAN = IBAN;
     }
 
     public Date getDate() {

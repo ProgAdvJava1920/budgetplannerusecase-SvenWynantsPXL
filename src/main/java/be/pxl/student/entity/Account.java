@@ -25,12 +25,6 @@ public class Account {
     public Account(){
     }
 
-    public Account(int id, String IBAN, String name) {
-        this.id = id;
-        this.IBAN = IBAN;
-        this.name = name;
-    }
-
     public String getIBAN() {
         return IBAN;
     }
