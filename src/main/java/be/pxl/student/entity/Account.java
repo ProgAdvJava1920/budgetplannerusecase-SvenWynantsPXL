@@ -25,6 +25,10 @@ public class Account {
     public Account(){
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getIBAN() {
         return IBAN;
     }

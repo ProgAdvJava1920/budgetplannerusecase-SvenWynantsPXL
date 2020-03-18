@@ -4,6 +4,12 @@ import java.util.List;
 
 public class PaymentDAO implements DAO<Payment, PaymentException> {
 
+    private String url;
+
+    public PaymentDAO(String url) {
+        this.url = url;
+    }
+
     @Override
     public Payment create(Payment payment) throws PaymentException {
         throw new PaymentException("not yet implemented");
